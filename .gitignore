@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+.env.*
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# OS / editors
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Logs and temp
+*.log
+*.tmp
+*.temp
+.cache/
+
+# Optional large / local outputs (keep results/*.csv if you want them public)
+# results/*.csv
+
+# Legacy backup copies
+*.old
+
+# Thesis / large binaries (add PDFs locally; optional to commit)
+# docs/paper/*.pdf
