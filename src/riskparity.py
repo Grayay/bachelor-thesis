@@ -116,48 +116,50 @@ def rolling_equal_weight_backtest(
 
 def compute_min_variance_weights(cov_matrix) -> np.ndarray:
     """
-    Compute long-only minimum variance weights with sum(weights)=1.
-
-    Uses unconstrained global minimum variance solution and then projects
-    to the simplex to enforce long-only and full-investment constraints.
+    Compute exact long-only minimum variance weights with SLSQP:
+      minimize w' * Sigma * w
+      subject to sum(w)=1, w_i>=0.
     """
     cov = np.asarray(cov_matrix, dtype=float)
     n_assets = cov.shape[0]
 
     if cov.ndim != 2 or cov.shape[0] != cov.shape[1]:
         raise ValueError("cov_matrix must be a square matrix.")
+    cov_reg = cov + 1e-8 * np.eye(n_assets)
+    x0 = np.full(n_assets, 1.0 / n_assets)
 
-    ones = np.ones(n_assets)
-    ridge = 1e-8
+    def objective(w: np.ndarray, cov_in: np.ndarray) -> float:
+        return float(w.T @ cov_in @ w)
 
-    # Add tiny ridge for numerical stability in nearly singular cases.
-    cov_reg = cov + ridge * np.eye(n_assets)
-    try:
-        inv_cov = np.linalg.inv(cov_reg)
-    except np.linalg.LinAlgError:
-        inv_cov = np.linalg.pinv(cov_reg)
+    constraints = ({"type": "eq", "fun": lambda w: np.sum(w) - 1.0},)
+    bounds = [(0.0, 1.0)] * n_assets
+    result = minimize(
+        objective,
+        x0,
+        args=(cov_reg,),
+        method="SLSQP",
+        bounds=bounds,
+        constraints=constraints,
+        options={"maxiter": 2000, "ftol": 1e-14},
+    )
+    if not result.success:
+        raise RuntimeError(f"Minimum variance optimization failed: {result.message}")
 
-    raw_weights = inv_cov @ ones
-    denom = ones @ raw_weights
-    if np.isclose(denom, 0.0):
-        return np.full(n_assets, 1.0 / n_assets)
-    raw_weights = raw_weights / denom
+    weights = np.asarray(result.x, dtype=float)
+    tol = 1e-8
+    if not np.isfinite(weights).all():
+        raise RuntimeError("Minimum variance optimization returned non-finite weights.")
+    if abs(weights.sum() - 1.0) > 1e-6:
+        raise RuntimeError("Minimum variance weights do not satisfy sum(w)=1.")
+    if (weights < -tol).any():
+        raise RuntimeError("Minimum variance weights violate non-negativity.")
 
-    # Project to simplex: w >= 0 and sum(w) = 1
-    sorted_w = np.sort(raw_weights)[::-1]
-    cumsum_w = np.cumsum(sorted_w)
-    rho_candidates = sorted_w + (1.0 - cumsum_w) / (np.arange(n_assets) + 1)
-    rho = np.where(rho_candidates > 0)[0]
-    if len(rho) == 0:
-        return np.full(n_assets, 1.0 / n_assets)
-    rho = rho[-1]
-    theta = (cumsum_w[rho] - 1.0) / (rho + 1)
-    weights = np.maximum(raw_weights - theta, 0.0)
-
-    weight_sum = weights.sum()
-    if np.isclose(weight_sum, 0.0):
-        return np.full(n_assets, 1.0 / n_assets)
-    return weights / weight_sum
+    weights = np.clip(weights, 0.0, 1.0)
+    weights = weights / weights.sum()
+    obj = objective(weights, cov_reg)
+    if not np.isfinite(obj):
+        raise RuntimeError("Minimum variance objective is not finite.")
+    return weights
 
 
 def rolling_min_variance_backtest(

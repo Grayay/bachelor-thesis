@@ -1,0 +1,96 @@
+{
+  "hybrid_unconstrained_vs_rp": {
+    "base": {
+      "weights_max_abs": 0.9016170074008782,
+      "oos_max_abs": 0.0299529238016157,
+      "dr_max_abs": 0.28864013993392,
+      "enb_max_abs": 0.5109588627578807,
+      "metric_deltas": {
+        "CAGR": 0.0016600000000000087,
+        "Volatility": 0.006699999999999998,
+        "Sharpe": -0.06224000000000007,
+        "Sortino": -0.04129000000000005,
+        "MaxDrawdown": 0.0,
+        "CVaR_5%": -0.0012299999999999985,
+        "DiversificationRatio": -0.04153999999999991,
+        "DiversificationRatioMean": -0.04153999999999991,
+        "DiversificationRatioMedian": -0.012739999999999974
+      }
+    },
+    "crypto": {
+      "weights_max_abs": 6.502313651957081e-07,
+      "oos_max_abs": 5.806567270061347e-08,
+      "dr_max_abs": 2.749099199395033e-07,
+      "enb_max_abs": 5.364792325934786e-07,
+      "metric_deltas": {
+        "CAGR": 0.0,
+        "Volatility": 0.0,
+        "Sharpe": 0.0,
+        "Sortino": 0.0,
+        "MaxDrawdown": 0.0,
+        "CVaR_5%": 0.0,
+        "DiversificationRatio": 0.0,
+        "DiversificationRatioMean": 0.0,
+        "DiversificationRatioMedian": 0.0
+      }
+    }
+  },
+  "ruonia_summary_capped": [
+    {
+      "strategy": "hybrid_ruonia_capped_base",
+      "mean_ruonia_weight": 0.1657407407407408,
+      "median_ruonia_weight": 0.25,
+      "max_ruonia_weight": 0.25,
+      "share_dates_ruonia_gt_25": 0.1111111111111111,
+      "share_dates_ruonia_gt_50": 0.0,
+      "ruonia_cap_25_bind_share": 0.5185185185185185
+    },
+    {
+      "strategy": "hybrid_ruonia_capped_crypto",
+      "mean_ruonia_weight": 0.1018518518518523,
+      "median_ruonia_weight": 0.05,
+      "max_ruonia_weight": 0.25,
+      "share_dates_ruonia_gt_25": 0.1111111111111111,
+      "share_dates_ruonia_gt_50": 0.0,
+      "ruonia_cap_25_bind_share": 0.2592592592592592
+    }
+  ],
+  "strategies": [
+    "ew_base",
+    "ew_crypto",
+    "mv_sample_base",
+    "mv_sample_crypto",
+    "mv_shrink_base",
+    "mv_shrink_crypto",
+    "rp_sample_base",
+    "rp_sample_crypto",
+    "rp_shrink_base",
+    "rp_shrink_crypto",
+    "aw_base",
+    "aw_crypto",
+    "hybrid_base",
+    "hybrid_crypto",
+    "hybrid_loose_base",
+    "hybrid_loose_crypto",
+    "hybrid_unconstrained_base",
+    "hybrid_unconstrained_crypto",
+    "hybrid_ruonia_capped_base",
+    "hybrid_ruonia_capped_crypto"
+  ],
+  "oos_shape": [
+    342,
+    20
+  ],
+  "weights_shape": [
+    2700,
+    5
+  ],
+  "dr_shape": [
+    540,
+    3
+  ],
+  "enb_shape": [
+    540,
+    3
+  ]
+}

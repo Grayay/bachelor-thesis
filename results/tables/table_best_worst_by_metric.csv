@@ -1,0 +1,9 @@
+metric,best_strategy,best_value,worst_strategy,worst_value
+CAGR,ew_crypto,0.30039,mv_shrink_base,0.0529
+Volatility,mv_sample_base,0.00573,ew_crypto,0.26101
+Sharpe,mv_sample_crypto,13.01282,rp_sample_crypto,0.65594
+Sortino,mv_sample_base,inf,rp_sample_crypto,0.9541
+CVaR_5%,mv_sample_base,0.00044,ew_crypto,-0.07509
+MaxDrawdown,mv_sample_base,0.0,ew_crypto,-0.50084
+DiversificationRatioMean,rp_shrink_crypto,1.9777,mv_sample_base,1.28616
+ENB_RC_Proxy,rp_shrink_crypto,5.777751179291307,mv_sample_crypto,1.0075224616124714

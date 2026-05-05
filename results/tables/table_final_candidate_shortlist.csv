@@ -1,0 +1,6 @@
+strategy,why_candidate,main_strength,main_weakness,risk_return_comment,diversification_comment
+rp_shrink_base,Strong shrinkage RP baseline,Stable risk budget,Lower CAGR than crypto peers,"CAGR=0.0696, Sharpe=1.0506, MaxDD=-0.1971",DR mean=1.9489
+rp_shrink_crypto,High DR and strong CAGR,Strong diversification profile,Tail risk and drawdown higher,"CAGR=0.1102, Sharpe=1.0565, MaxDD=-0.3451",DR mean=1.9777
+aw_crypto,Core thesis-consistent extended AW,Return and Sharpe uplift,Crisis tail risk worsens,"CAGR=0.1389, Sharpe=1.0519, MaxDD=-0.3288",DR mean=1.6152
+hybrid_ruonia_capped_crypto,Cap-aware hybrid candidate,Balances anchor and RP blend,Needs cap-binding diagnostics context,"CAGR=0.1109, Sharpe=0.9200, MaxDD=-0.3503",DR mean=1.6583
+mv_shrink_crypto,Constrained MV with shrinkage,Controlled volatility,Can still concentrate exposures,"CAGR=0.0661, Sharpe=1.2410, MaxDD=-0.1448",DR mean=1.8249

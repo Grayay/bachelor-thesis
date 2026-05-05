@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from paths import DIVERSIFICATION_RATIO_CSV
 
 WEEKS_PER_YEAR = 52
 
@@ -87,14 +88,15 @@ def compute_kurtosis(returns: pd.DataFrame) -> pd.Series:
 
 def compute_diversification_ratio(returns: pd.DataFrame) -> pd.Series:
     """
-    Diversification Ratio (DR) requires constituent asset vols and portfolio weights.
-
-    The OOS returns DataFrame contains only portfolio returns, so DR cannot be
-    computed without additional inputs (weights and underlying asset returns).
-
-    Returns NaN for each strategy to avoid a misleading proxy.
+    Mean Diversification Ratio by strategy from exported rebalance panel.
     """
-    return pd.Series(np.nan, index=returns.columns)
+    if not DIVERSIFICATION_RATIO_CSV.exists():
+        return pd.Series(np.nan, index=returns.columns)
+    dr_df = pd.read_csv(DIVERSIFICATION_RATIO_CSV, parse_dates=["rebalance_date"])
+    if dr_df.empty:
+        return pd.Series(np.nan, index=returns.columns)
+    grouped = dr_df.groupby("strategy")["diversification_ratio"].mean()
+    return grouped.reindex(returns.columns)
 
 
 def compute_metrics_table(
